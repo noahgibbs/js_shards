@@ -2,6 +2,7 @@
 
 window.EventingSubgame = {
     activate: function(model) {
+        $(window.EventingSubgame.pageLoaded);
         window.EventingSubgame.models.push(model);
         if(model.setupActionUI) {
             model.setupActionUI();
@@ -13,11 +14,21 @@ window.EventingSubgame = {
         _.pull(window.EventingSubgame.models, model);
         window.EventingSubgame.activated--;
     },
+    pageLoaded: function() {
+        window.EventingSubgame.pageLoadedYet = 1;
+    },
     startHandler: function() {
         window.requestAnimationFrame(window.EventingSubgame.handler);
     },
     handler: function(timestamp) {
         if(window.EventingSubgame.activated < 1) return;
+
+        // If the page isn't loaded, we'll re-run the handler but not update models yet.
+        if(window.EventingSubgame.pageLoadedYet < 1) {
+            console.log("Handler called, page not loaded, skipping");
+            window.EventingSubgame.startHandler();
+            return;
+        }
 
         window.EventingSubgame.models.forEach(function(m) {
             m.update(timestamp);
@@ -30,6 +41,7 @@ window.EventingSubgame = {
     receive: function(data) {
     },
     activated: 0,
+    pageLoadedYet: 0,
     models: []
 };
 

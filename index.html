@@ -12,10 +12,26 @@
         setVariables(variables) {
           super.setVariables(variables);
 
+          if(document.getElementById("strength_training_action") === null) {
+            return; // DOM not yet loaded
+          }
+
+          if(this.variables.fashionable < 0) this.variables.fashionable = 0;
+          if(this.variables.strong < 0) this.variables.strong = 0;
+          if(this.variables.exhausted < 0) this.variables.exhausted = 0;
+
           // Update DOM
           $("#fashionable").text("" + variables.fashionable);
           $("#exhausted").text("" + variables.exhausted);
           $("#strong").text("" + variables.strong);
+
+          if(this.exhausted >= 10.0) {
+            document.getElementById("strength_training_action").disabled = true;
+            document.getElementById("posing_action").disabled = true;
+          } else {
+            document.getElementById("strength_training_action").disabled = false;
+            document.getElementById("posing_action").disabled = false;
+          }
         }
       }
 
@@ -30,8 +46,8 @@
       Strong: <span id="strong"></span> <br/>
     </div>
     <div class="actions">
-      <button onclick='window.simpleEventing.takeAction("strength_training");'>Strength Training</button>
-      <button onclick='window.simpleEventing.takeAction("posing");'>Posing</button>
+      <button id="strength_training_action" onclick='window.simpleEventing.takeAction("strength_training");'>Strength Training</button>
+      <button id="posing_action" onclick='window.simpleEventing.takeAction("posing");'>Posing</button>
     </div>
   </body>
 </html>
