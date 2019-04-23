@@ -1,0 +1,37 @@
+<html>
+  <head>
+    <script src="jquery-3.3.1.js"></script>
+    <script src="lodash.js"></script>
+    <script src="eventing_subgame.js"></script>
+    <script type="text/javascript">
+      class ShardsGameModel extends SimpleGameModel {
+        constructor(initialTime) {
+          console.log("ShardsGameModel constructor");
+          super(initialTime);
+        }
+        setVariables(variables) {
+          super.setVariables(variables);
+
+          // Update DOM
+          $("#fashionable").text("" + variables.fashionable);
+          $("#exhausted").text("" + variables.exhausted);
+          $("#strong").text("" + variables.strong);
+        }
+      }
+
+      window.simpleEventing = new ShardsGameModel(0.0);
+      window.EventingSubgame.activate(window.simpleEventing);
+    </script>
+  </head>
+  <body>
+    <div class="stats">
+      Fashionable: <span id="fashionable"></span> <br/>
+      Exhausted: <span id="exhausted"></span> <br/>
+      Strong: <span id="strong"></span> <br/>
+    </div>
+    <div class="actions">
+      <button onclick='window.simpleEventing.takeAction("strength_training");'>Strength Training</button>
+      <button onclick='window.simpleEventing.takeAction("posing");'>Posing</button>
+    </div>
+  </body>
+</html>
