@@ -1,4 +1,5 @@
 // Various JS for EventingSubgame
+'use strict';
 
 window.EventingSubgame = {
     activate: function(model) {
